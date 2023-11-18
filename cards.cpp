@@ -156,6 +156,7 @@ card* hand::find(card* c){
 }
 
 //find helper, n is root,
+//find helper, n is root,
 card* hand::getCardNode(card& c, card* n){
   if(n){
     if(*n == c){
@@ -167,10 +168,7 @@ card* hand::getCardNode(card& c, card* n){
     if(c > *n){
       return getCardNode(c, n->right);
     }
-  }
-  else{
-    return NULL;
-  }
+  }return NULL;
 }
 
 //get successor
