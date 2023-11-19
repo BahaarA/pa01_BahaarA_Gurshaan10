@@ -1,61 +1,71 @@
 //cards.cpp
-//ba
+//Bahaar Ahuja and Gurshaan Sachdeva
 //Implementation of the classes defined in cards.h
 
 #include "cards.h"
-
 #include <iostream>
 #include <string>
 using namespace std;
 
 //constructor
-hand::hand(){
-  root = 0;
-}
+hand::hand(){ root = 0; }
 
 //deconstructor
-hand::~hand(){
-  clear(root);
-}
+hand::~hand(){ clear(root); }
 
 //deconstructor helper
-void hand::clear(card* c){
-  if (c) {
-    clear(c->left);
-    clear(c->right);
-    delete c;
+void hand::clear(card* x){
+  if (x) {
+    clear(x->left);
+    clear(x->right);
+    delete x;
   }
 }
 
-//converts suit char into an int value
-int convertsuit(const char& suit){
-  if(suit == 'c'){
-    return 1;
-  }else if(suit == 'd'){
-    return 2;
-  }else if(suit == 's'){
-    return 3;
-  }else if(suit == 'h'){
-    return 4;
-  }else{
-    return 0;
-  }
+// Overloading == operator
+bool operator==(const card& c1, const card& c2) {
+    return (c1.suitv == c2.suitv) && (c1.facev == c2.facev);
 }
 
-//convers face char into an int value
-int convertface(const char& face){
+// Overloading > operator
+bool operator>(const card& c1, const card& c2) {
+    return (c1.suitv > c2.suitv) || ((c1.suitv == c2.suitv) && (c1.facev > c2.facev));
+}
+
+// Overloading < operator
+bool operator<(const card& c1, const card& c2) {
+    return (c1.suitv < c2.suitv) || ((c1.suitv == c2.suitv) && (c1.facev < c2.facev));
+}
+
+//converts face char into an int value
+int con_face(const char& face){
   if(face == 'a'){
     return 1;
-  }else if(face == 'j'){
-    return 11;
+  }else if(face == '1' || face == '0'){
+    return 10;
   }else if(face == 'q'){
     return 12;
   }else if(face == 'k'){
     return 13;
-  }else if(face == '1' || face == '0'){
-    return 10;
+  }else if(face == 'j'){
+    return 11;
   }else{
     return face - '0';
+  }
+}
+
+//converts suit char into an int value
+int con_suit(const char& suit){
+  if(suit == 'h'){
+    return 4;
+  }else if(suit == 's'){
+    return 3;
+  }else if(suit == 'd'){
+    return 3;
+  }else if(suit == 'c'){
+    return 1;
+  }else{
+    return 0;
   }
 }
 
@@ -75,98 +85,96 @@ void hand::insert(const char suit, const char face){
 }
 
 //insert helper
-void hand::inserth(const char suit, const char face, card* c){
+void hand::inserth(const char suit, const char face, card* x){
   int fi, si;
   si = convertsuit(suit);
   fi = convertface(face);
-  if(si < c->suitv){
-    if(c->left){
-      return inserth(suit, face, c->left);
+  if(si < x->suitv){
+    if(x->left){
+      return inserth(suit, face, x->left);
     }
     else{
-      c->left = new card;
-      c->left->suitv = si;
-      c->left->facev = fi;
-      c->left->left = 0;
-      c->left->right = 0;
-      c->left->parent = c;
+      x->left = new card;
+      x->left->suitv = si;
+      x->left->facev = fi;
+      x->left->left = 0;
+      x->left->right = 0;
+      x->left->parent = x;
     }
   }
-  else if(si > c->suitv){
-    if(c->right){
-      return inserth(suit, face, c->right);
+  else if(si > x->suitv){
+    if(x->right){
+      return inserth(suit, face, x->right);
     }
     else{
-      c->right = new card;
-      c->right->suitv = si;
-      c->right->facev = fi;
-      c->right->left = 0;
-      c->right->right = 0;
-      c->right->parent = c;
+      x->right = new card;
+      x->right->suitv = si;
+      x->right->facev = fi;
+      x->right->left = 0;
+      x->right->right = 0;
+      x->right->parent = x;
     }
   }
   else{
-    if(fi < c->facev){
-      if(c->left){
-  return inserth(suit, face, c->left);
+    if(fi < x->facev){
+      if(x->left){
+  return inserth(suit, face, x->left);
       }
       else{
-  c->left = new card;
-  c->left->suitv = si;
-  c->left->facev = fi;
-  c->left->left = 0;
-  c->left->right = 0;
-  c->left->parent = c;
+  x->left = new card;
+  x->left->suitv = si;
+  x->left->facev = fi;
+  x->left->left = 0;
+  x->left->right = 0;
+  x->left->parent = x;
       }
     }
     else{
-      if(c->right){
-  return inserth(suit, face, c->right);
+      if(x->right){
+  return inserth(suit, face, x->right);
       }
       else{
-  c->right = new card;
-  c->right->suitv = si;
-  c->right->facev = fi;
-  c->right->left = 0;
-  c->right->right = 0;
-  c->right->parent = c;
+  x->right = new card;
+  x->right->suitv = si;
+  x->right->facev = fi;
+  x->right->left = 0;
+  x->right->right = 0;
+  x->right->parent = x;
       }
     }  
   }
 }
 
 //print function
-void hand::print() const{
-  printInOrder(root);
-}
+void hand::print() const{ printInOrder(root); }
 
 //print helper
-void hand::printInOrder(card* c) const{
-  if(c == NULL){
+void hand::printInOrder(card* x) const{
+  if(x == nullptr){
     return;
   }
-  printInOrder(c->left);
-  cout << cardToString(c->suitv, c->facev) << endl;
-  printInOrder(c->right);
+  printInOrder(x->left);
+  cout << cardToString(x->suitv, x->facev) << endl;
+  printInOrder(x->right);
 }
 
 //finds card
-card* hand::find(card* c){
-  return getCardNode(*c, root);
+card* hand::find(card* x){
+  return getCardNode(*x, root);
 }
 
 //find helper, n is root,
 //find helper, n is root,
-card* hand::getCardNode(card& c, card* n){
+card* hand::getCardNode(card& x, card* n){
   if(n){
-    if(*n == c){
+    if(*n == x){
       return n;
     }
-    if(c < *n){
-      return getCardNode(c, n->left);
+    if(x < *n){
+      return getCardNode(x, n->left);
     }
-    if(c > *n){
-      return getCardNode(c, n->right);
+    if(x > *n){
+      return getCardNode(x, n->right);
     }
   }return NULL;
 }
@@ -227,22 +235,22 @@ card* hand::getPredecessorCard(card* n){
   return NULL;
 }
 
-//returns max card
-card* hand::ismax(card* n){
-  card* tmp = n;
-  while (tmp->right){
-    tmp = tmp->right;
+//returns minimum card
+card* hand::ismin(card* n){
+  card* temp = n;
+  while(temp->left){
+    temp = temp->left;
   }
-  return tmp;
+  return temp;
 }
 
-//returns min card
-card* hand::ismin(card* n){
-  card* tmp = n;
-  while(tmp->left){
-    tmp = tmp->left;
+//returns maximum card
+card* hand::ismax(card* n){
+  card* temp = n;
+  while (temp->right){
+    temp = temp->right;
   }
-  return tmp;
+  return temp;
 }
 
 //removes card n
@@ -305,9 +313,7 @@ void hand::removeCard(card* n){
 }
 
 //counts number of cards in hand
-int hand::count() const{
-  return countHelper(root);
-}
+int hand::count() const{ return countHelper(root); }
 
 //count helper
 int hand::countHelper(card* n) const{
@@ -360,52 +366,6 @@ string cardToString(const int svalue, const int fvalue){
 
   s = a + " " + b;
   return s;
-}
-
-//overloading == operator
-bool operator==(card& c1, card& c2){
-  if(c1.suitv == c2.suitv && c1.facev == c2.facev){
-    return true;
-  }
-  else{
-    return false;
-  }
-}
-
-//overloading > operator
-bool operator>(card& c1, card& c2){
-  if(c1.suitv > c2.suitv){
-    return true;
-  }
-  else if(c1.suitv < c2.suitv){
-    return false;
-  }
-  else{
-    if(c1.facev > c2.facev){
-      return true;
-    }
-    else{
-      return false;
-    }
-  }
-}
-
-//overloading < operator
-bool operator<(card& c1, card& c2){
-  if(c1.suitv < c2.suitv){
-    return true;
-  }
-  else if(c1.suitv > c2.suitv){
-    return false;
-  }
-  else{
-    if(c1.facev < c2.facev){
-      return true;
-    }
-    else{
-      return false;
-    }
-  }
 }
 
 //2nd print card function
