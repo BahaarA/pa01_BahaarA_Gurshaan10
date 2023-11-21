@@ -10,13 +10,11 @@
 using namespace std;
 
 struct card{
-
   int facev;
   int suitv;
   card* l;
   card* r;
   card* parent;
-
   };
 
 //hand in form of bst
