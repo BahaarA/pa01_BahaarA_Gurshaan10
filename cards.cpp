@@ -25,33 +25,20 @@ void hand::clear(card* c){
 
 //converts suit char into an int value
 int suitConvertor(const char& suit){
-  if(suit == 'c'){
-    return 1;
-  }else if(suit == 'd'){
-    return 2;
-  }else if(suit == 's'){
-    return 3;
-  }else if(suit == 'h'){
-    return 4;
-  }else{
-    return 0;
-  }
-}
+  if(suit == 'c'){return 1;}
+  else if(suit == 'd'){return 2;}
+  else if(suit == 's'){return 3;}
+  else if(suit == 'h'){return 4;}
+  else{return 0;}}
 
 //convers face char into an int value
 int faceConvertor(const char& face){
-  if(face == 'a'){
-    return 1;
-  }else if(face == 'j'){
-    return 11;
-  }else if(face == 'q'){
-    return 12;
-  }else if(face == 'k'){
-    return 13;
-  }else if(face == '1' || face == '0'){
-    return 10;
-  }else{
-    return face - '0';
+  if(face == 'a'){return 1;}
+  else if(face == 'j'){return 11;}
+  else if(face == 'q'){return 12;}
+  else if(face == 'k'){return 13;}
+  else if(face == '1' || face == '0'){return 10;}
+  else{return face - '0';
   }
 }
 
