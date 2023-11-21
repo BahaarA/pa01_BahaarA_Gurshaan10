@@ -14,8 +14,7 @@ struct card{
   int suitv;
   card* l;
   card* r;
-  card* parent;
-  };
+  card* parent;};
 
 //hand in form of bst
 class hand{
@@ -26,7 +25,7 @@ class hand{
   void clear(card* x);
 
   void insert(const char suit, const char face);
-  void inserth(const char suit, const char face, card* c);
+  void insertHelper(const char suit, const char face, card* c);
 
   void print() const;
 
