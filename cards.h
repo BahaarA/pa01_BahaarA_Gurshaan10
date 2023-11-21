@@ -56,8 +56,8 @@ void printCards(hand& h1, hand& h2);
 void traverseh1(hand& h1, hand& h2, bool& iscomplete);
 void traverseh2(hand& h2, hand& h1, bool& iscomplete);
 
-int suitConvertor(const char& suit);
-int faceConvertor(const char& face);
+int convertsuit(const char& suit);
+int convertface(const char& face);
 
 string cardToString(const int svalue, const int fvalue);
 
