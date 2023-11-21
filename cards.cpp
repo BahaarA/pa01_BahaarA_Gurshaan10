@@ -19,9 +19,7 @@ void hand::clear(card* c){
   if (c) {
     clear(c->l);
     clear(c->r);
-    delete c;
-  }
-}
+    delete c;}}
 
 //converts suit char into an int value
 int suitConvertor(const char& suit){
@@ -53,18 +51,18 @@ void hand::insert(const char suit, const char face){
     root->parent = 0;
   }
   else{
-    inserth(suit, face, root);
+    insertHelper(suit, face, root);
   }
 }
 
 //insert helper
-void hand::inserth(const char suit, const char face, card* c){
+void hand::insertHelper(const char suit, const char face, card* c){
   int fi, si;
   si = suitConvertor(suit);
   fi = faceConvertor(face);
   if(si < c->suitv){
     if(c->l){
-      return inserth(suit, face, c->l);
+      return insertHelper(suit, face, c->l);
     }
     else{
       c->l = new card;
@@ -77,7 +75,7 @@ void hand::inserth(const char suit, const char face, card* c){
   }
   else if(si > c->suitv){
     if(c->r){
-      return inserth(suit, face, c->r);
+      return insertHelper(suit, face, c->r);
     }
     else{
       c->r = new card;
@@ -91,7 +89,7 @@ void hand::inserth(const char suit, const char face, card* c){
   else{
     if(fi < c->facev){
       if(c->l){
-  return inserth(suit, face, c->l);
+  return insertHelper(suit, face, c->l);
       }
       else{
   c->l = new card;
@@ -104,7 +102,7 @@ void hand::inserth(const char suit, const char face, card* c){
     }
     else{
       if(c->r){
-  return inserth(suit, face, c->r);
+  return insertHelper(suit, face, c->r);
       }
       else{
   c->r = new card;
@@ -156,29 +154,15 @@ card* hand::getCardNode(card& c, card* n){
 
 //get successor
 card* hand::getSuccessorCard(card* n){
-  if(n->r){
-    n = n->r;
-    while(n->l){
-      n = n->l;
-    }
-    return n;
-  }
+  if(n->r){n = n->r;
+    while(n->l){n=n->l;}
+    return n;}
   else if(n->parent != 0){
-    if(n->parent->l == n){
-      return n->parent;
-    }
-    else if(n->parent->r == n){
-      n = n->parent;
-      while (n->parent){
-  if(n->parent->l != n){
-    n = n->parent;
-  }
-  else{
-    return n->parent;
-  }
-      }
-    }
-  }
+    if(n->parent->l == n){return n->parent;}
+    else if(n->parent->r == n){n = n->parent;
+      while (n->parent){if(n->parent->l != n){
+    n = n->parent;}
+  else{return n->parent;}}}}
   return NULL;
 }
 
@@ -213,20 +197,14 @@ card* hand::getPredecessorCard(card* n){
 //returns max card
 card* hand::ismax(card* n){
   card* tmp = n;
-  while (tmp->r){
-    tmp = tmp->r;
-  }
-  return tmp;
-}
+  while (tmp->r){tmp = tmp->r;}
+  return tmp;}
 
 //returns min card
 card* hand::ismin(card* n){
   card* tmp = n;
-  while(tmp->l){
-    tmp = tmp->l;
-  }
-  return tmp;
-}
+  while(tmp->l){tmp = tmp->l;}
+  return tmp;}
 
 //removes card n
 void hand::removeCard(card* n){
