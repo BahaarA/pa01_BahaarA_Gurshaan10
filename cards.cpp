@@ -24,45 +24,60 @@ void hand::clear(card* c){
 }
 
 //converts suit char into an int value
-int suitConvertor(const char& cardSuit){
-  if(cardSuit == 'c'){return 1;}
-  else if(cardSuit == 'd'){return 2;}
-  else if(cardSuit == 's'){return 3;}
-  else if(cardSuit == 'h'){return 4;}
-  else{return 0;}}
+int convertsuit(const char& suit){
+  if(suit == 'c'){
+    return 1;
+  }else if(suit == 'd'){
+    return 2;
+  }else if(suit == 's'){
+    return 3;
+  }else if(suit == 'h'){
+    return 4;
+  }else{
+    return 0;
+  }
+}
 
 //convers face char into an int value
-int faceConvertor(const char& cardFace){
-  if(cardFace == 'a'){return 1;}
-  else if(cardFace == 'j'){return 11;}
-  else if(cardFace == 'q'){return 12;}
-  else if(cardFace == 'k'){return 13;}
-  else if(cardFace == '1' || cardFace == '0'){return 10;}
-  else{return face - '0';}}
+int convertface(const char& face){
+  if(face == 'a'){
+    return 1;
+  }else if(face == 'j'){
+    return 11;
+  }else if(face == 'q'){
+    return 12;
+  }else if(face == 'k'){
+    return 13;
+  }else if(face == '1' || face == '0'){
+    return 10;
+  }else{
+    return face - '0';
+  }
+}
 
 //appends cards to tree
 void hand::insert(const char suit, const char face){
   if (root == 0){
     root = new card;
-    root->suitv = suitConvertor(suit);
-    root->facev = faceConvertor(face);
+    root->suitv = convertsuit(suit);
+    root->facev = convertface(face);
     root->l = 0;
     root->r = 0;
     root->parent = 0;
   }
   else{
-    insertHelper(suit, face, root);
+    inserth(suit, face, root);
   }
 }
 
 //insert helper
-void hand::insertHelperelper(const char suit, const char face, card* c){
+void hand::inserth(const char suit, const char face, card* c){
   int fi, si;
-  si = suitConvertor(suit);
-  fi = faceConvertor(face);
+  si = convertsuit(suit);
+  fi = convertface(face);
   if(si < c->suitv){
     if(c->l){
-      return insertHelperelper(suit, face, c->l);
+      return inserth(suit, face, c->l);
     }
     else{
       c->l = new card;
@@ -75,7 +90,7 @@ void hand::insertHelperelper(const char suit, const char face, card* c){
   }
   else if(si > c->suitv){
     if(c->r){
-      return insertHelper(suit, face, c->r);
+      return inserth(suit, face, c->r);
     }
     else{
       c->r = new card;
@@ -89,7 +104,7 @@ void hand::insertHelperelper(const char suit, const char face, card* c){
   else{
     if(fi < c->facev){
       if(c->l){
-  return insertHelper(suit, face, c->l);
+  return inserth(suit, face, c->l);
       }
       else{
   c->l = new card;
@@ -102,7 +117,7 @@ void hand::insertHelperelper(const char suit, const char face, card* c){
     }
     else{
       if(c->r){
-  return insertHelper(suit, face, c->r);
+  return inserth(suit, face, c->r);
       }
       else{
   c->r = new card;
@@ -117,24 +132,40 @@ void hand::insertHelperelper(const char suit, const char face, card* c){
 }
 
 //print function
-void hand::print() const{printInOrder(root);}
+void hand::print() const{
+  printInOrder(root);
+}
 
 //print helper
-void hand::printInOrder(card* c) const{if(c == NULL){return;}
+void hand::printInOrder(card* c) const{
+  if(c == NULL){
+    return;
+  }
   printInOrder(c->l);
   cout << cardToString(c->suitv, c->facev) << endl;
-  printInOrder(c->r);}
+  printInOrder(c->r);
+}
 
 //finds card
-card* hand::find(card* c){return getCardNode(*c, root);}
+card* hand::find(card* c){
+  return getCardNode(*c, root);
+}
 
 //find helper, n is root,
 //find helper, n is root,
 card* hand::getCardNode(card& c, card* n){
-  if(n){if(*n == c){return n;}
-    if(c < *n){return getCardNode(c, n->l);}
-    if(c > *n){return getCardNode(c, n->r);}
-  }return NULL;}
+  if(n){
+    if(*n == c){
+      return n;
+    }
+    if(c < *n){
+      return getCardNode(c, n->l);
+    }
+    if(c > *n){
+      return getCardNode(c, n->r);
+    }
+  }return NULL;
+}
 
 //get successor
 card* hand::getSuccessorCard(card* n){
