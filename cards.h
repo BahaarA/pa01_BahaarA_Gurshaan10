@@ -1,5 +1,5 @@
 // cards.h
-// Author: Your name
+// Author: Bahaar Ahuja
 // All class declarations go here
 
 #ifndef CARDS_H
@@ -13,8 +13,8 @@ struct card{
 
   int facev;
   int suitv;
-  card* left;
-  card* right;
+  card* l;
+  card* r;
   card* parent;
 
   };
