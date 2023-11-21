@@ -24,7 +24,7 @@ void hand::clear(card* c){
 }
 
 //converts suit char into an int value
-int convertsuit(const char& suit){
+int suitConvertor(const char& suit){
   if(suit == 'c'){
     return 1;
   }else if(suit == 'd'){
@@ -39,7 +39,7 @@ int convertsuit(const char& suit){
 }
 
 //convers face char into an int value
-int convertface(const char& face){
+int faceConvertor(const char& face){
   if(face == 'a'){
     return 1;
   }else if(face == 'j'){
@@ -59,8 +59,8 @@ int convertface(const char& face){
 void hand::insert(const char suit, const char face){
   if (root == 0){
     root = new card;
-    root->suitv = convertsuit(suit);
-    root->facev = convertface(face);
+    root->suitv = suitConvertor(suit);
+    root->facev = faceConvertor(face);
     root->l = 0;
     root->r = 0;
     root->parent = 0;
@@ -73,8 +73,8 @@ void hand::insert(const char suit, const char face){
 //insert helper
 void hand::inserth(const char suit, const char face, card* c){
   int fi, si;
-  si = convertsuit(suit);
-  fi = convertface(face);
+  si = suitConvertor(suit);
+  fi = faceConvertor(face);
   if(si < c->suitv){
     if(c->l){
       return inserth(suit, face, c->l);
