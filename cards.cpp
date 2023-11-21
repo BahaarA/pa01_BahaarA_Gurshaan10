@@ -9,20 +9,16 @@
 using namespace std;
 
 //constructor
-hand::hand(){
-  root = 0;
-}
+hand::hand(){root = 0;}
 
 //deconstructor
-hand::~hand(){
-  clear(root);
-}
+hand::~hand(){clear(root);}
 
 //deconstructor helper
 void hand::clear(card* c){
   if (c) {
-    clear(c->left);
-    clear(c->right);
+    clear(c->l);
+    clear(c->r);
     delete c;
   }
 }
@@ -65,8 +61,8 @@ void hand::insert(const char suit, const char face){
     root = new card;
     root->suitv = convertsuit(suit);
     root->facev = convertface(face);
-    root->left = 0;
-    root->right = 0;
+    root->l = 0;
+    root->r = 0;
     root->parent = 0;
   }
   else{
@@ -80,56 +76,56 @@ void hand::inserth(const char suit, const char face, card* c){
   si = convertsuit(suit);
   fi = convertface(face);
   if(si < c->suitv){
-    if(c->left){
-      return inserth(suit, face, c->left);
+    if(c->l){
+      return inserth(suit, face, c->l);
     }
     else{
-      c->left = new card;
-      c->left->suitv = si;
-      c->left->facev = fi;
-      c->left->left = 0;
-      c->left->right = 0;
-      c->left->parent = c;
+      c->l = new card;
+      c->l->suitv = si;
+      c->l->facev = fi;
+      c->l->l = 0;
+      c->l->r = 0;
+      c->l->parent = c;
     }
   }
   else if(si > c->suitv){
-    if(c->right){
-      return inserth(suit, face, c->right);
+    if(c->r){
+      return inserth(suit, face, c->r);
     }
     else{
-      c->right = new card;
-      c->right->suitv = si;
-      c->right->facev = fi;
-      c->right->left = 0;
-      c->right->right = 0;
-      c->right->parent = c;
+      c->r = new card;
+      c->r->suitv = si;
+      c->r->facev = fi;
+      c->r->l = 0;
+      c->r->r = 0;
+      c->r->parent = c;
     }
   }
   else{
     if(fi < c->facev){
-      if(c->left){
-  return inserth(suit, face, c->left);
+      if(c->l){
+  return inserth(suit, face, c->l);
       }
       else{
-  c->left = new card;
-  c->left->suitv = si;
-  c->left->facev = fi;
-  c->left->left = 0;
-  c->left->right = 0;
-  c->left->parent = c;
+  c->l = new card;
+  c->l->suitv = si;
+  c->l->facev = fi;
+  c->l->l = 0;
+  c->l->r = 0;
+  c->l->parent = c;
       }
     }
     else{
-      if(c->right){
-  return inserth(suit, face, c->right);
+      if(c->r){
+  return inserth(suit, face, c->r);
       }
       else{
-  c->right = new card;
-  c->right->suitv = si;
-  c->right->facev = fi;
-  c->right->left = 0;
-  c->right->right = 0;
-  c->right->parent = c;
+  c->r = new card;
+  c->r->suitv = si;
+  c->r->facev = fi;
+  c->r->l = 0;
+  c->r->r = 0;
+  c->r->parent = c;
       }
     }  
   }
@@ -145,9 +141,9 @@ void hand::printInOrder(card* c) const{
   if(c == NULL){
     return;
   }
-  printInOrder(c->left);
+  printInOrder(c->l);
   cout << cardToString(c->suitv, c->facev) << endl;
-  printInOrder(c->right);
+  printInOrder(c->r);
 }
 
 //finds card
@@ -163,31 +159,31 @@ card* hand::getCardNode(card& c, card* n){
       return n;
     }
     if(c < *n){
-      return getCardNode(c, n->left);
+      return getCardNode(c, n->l);
     }
     if(c > *n){
-      return getCardNode(c, n->right);
+      return getCardNode(c, n->r);
     }
   }return NULL;
 }
 
 //get successor
 card* hand::getSuccessorCard(card* n){
-  if(n->right){
-    n = n->right;
-    while(n->left){
-      n = n->left;
+  if(n->r){
+    n = n->r;
+    while(n->l){
+      n = n->l;
     }
     return n;
   }
   else if(n->parent != 0){
-    if(n->parent->left == n){
+    if(n->parent->l == n){
       return n->parent;
     }
-    else if(n->parent->right == n){
+    else if(n->parent->r == n){
       n = n->parent;
       while (n->parent){
-  if(n->parent->left != n){
+  if(n->parent->l != n){
     n = n->parent;
   }
   else{
@@ -201,21 +197,21 @@ card* hand::getSuccessorCard(card* n){
 
 //gets predecessor node
 card* hand::getPredecessorCard(card* n){
-  if(n->left){
-    n = n->left;
-    while(n->right){
-      n = n->right;
+  if(n->l){
+    n = n->l;
+    while(n->r){
+      n = n->r;
     }
     return n;
   }
   else if(n->parent != 0){
-    if(n->parent->right == n){
+    if(n->parent->r == n){
       return n->parent;
     }
-    else if(n->parent->left == n){
+    else if(n->parent->l == n){
       n = n->parent;
       while (n->parent){
-  if(n->parent->right != n){
+  if(n->parent->r != n){
     n = n->parent;
   }
   else{
@@ -230,8 +226,8 @@ card* hand::getPredecessorCard(card* n){
 //returns max card
 card* hand::ismax(card* n){
   card* tmp = n;
-  while (tmp->right){
-    tmp = tmp->right;
+  while (tmp->r){
+    tmp = tmp->r;
   }
   return tmp;
 }
@@ -239,57 +235,57 @@ card* hand::ismax(card* n){
 //returns min card
 card* hand::ismin(card* n){
   card* tmp = n;
-  while(tmp->left){
-    tmp = tmp->left;
+  while(tmp->l){
+    tmp = tmp->l;
   }
   return tmp;
 }
 
 //removes card n
 void hand::removeCard(card* n){
-  if(n->left == 0 && n->right == 0){
+  if(n->l == 0 && n->r == 0){
     if (n == root)
       delete n;
-    else if (n == (n->parent->left))
-      n->parent->left = 0;
+    else if (n == (n->parent->l))
+      n->parent->l = 0;
     else
-      n->parent->right = 0;
+      n->parent->r = 0;
     delete n;
   }
-  else if(n->left == 0){
+  else if(n->l == 0){
     if (n == root){
-      root = n->right;
+      root = n->r;
       root->parent = 0;
       delete n;
     }
     else{
       if (*n->parent < *n){
-        n->parent->right = n->right;
-  n->right->parent = n->parent;
+        n->parent->r = n->r;
+  n->r->parent = n->parent;
   delete n;
       }
       else{
-        n->parent->left = n->right;
-        n->right->parent = n->parent;
+        n->parent->l = n->r;
+        n->r->parent = n->parent;
   delete n;
       }
     }   
   }
-  else if( n->right == 0){
+  else if( n->r == 0){
     if (n==root){
-      root = n->left;
-      n->left->parent = 0;
+      root = n->l;
+      n->l->parent = 0;
       delete n;
     }
     else{
       if (*n->parent < *n){
-  n->parent->right = n->left;
-  n->left->parent = n->parent;
+  n->parent->r = n->l;
+  n->l->parent = n->parent;
   delete n;
       }
       else{
-  n->parent->left = n->left;
-  n->left->parent = n->parent;
+  n->parent->l = n->l;
+  n->l->parent = n->parent;
   delete n;
       }
     }
@@ -314,7 +310,7 @@ int hand::countHelper(card* n) const{
   if(n == NULL){
     return 0;
   }
-  return 1 + countHelper(n->left) + countHelper(n->right);
+  return 1 + countHelper(n->l) + countHelper(n->r);
 }
 
 //convert int value card attributes to string
